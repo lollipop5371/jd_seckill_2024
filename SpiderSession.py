@@ -11,7 +11,7 @@ import util
 
 def url_params_to_json():
     # 期望的参数列表
-    expected_params = ['functionId', 'clientVersion', 'build', 'client', 'partner', 'oaid', 'sdkVersion', 'lang',
+    expected_params = ['functionId', 'clientVersion', 'build', 'client', 'partner',  'sdkVersion', 'lang',
                        'harmonyOs', 'networkType', 'uts', 'uemps', 'ext', 'eid', 'x-api-eid-token', 'ef', 'ep']
 
     api_jd_url = global_config.getRaw('config', 'api_jd_url')
@@ -100,7 +100,7 @@ class SpiderSession:
         params = kwargs.get("params")
         allow_redirects = kwargs.get("allow_redirects")
         try:
-            result = self.session.get(url, params=params, allow_redirects=allow_redirects)
+            result = self.session.get(url, params=params, allow_redirects=allow_redirects, verify=False)
             return result
         except Exception as e:
             logger.error("get请求错误: %s" % e)
@@ -114,7 +114,7 @@ class SpiderSession:
         data = kwargs.get("data")
         allow_redirects = kwargs.get("allow_redirects")
         try:
-            result = self.session.post(url, params=params, data=data, allow_redirects=allow_redirects)
+            result = self.session.post(url, params=params, data=data, allow_redirects=allow_redirects, verify=False)
             return result
         except Exception as e:
             logger.error("post请求错误: %s" % e)
@@ -144,7 +144,7 @@ class SpiderSession:
         self.payload['ep'] = self.gen_cipher_ep()
 
         url = url + parse.urlencode(self.payload) + '&' + sign_str
-        resp = self.session.post(url=url, data=data)
+        resp = self.session.post(url=url, data=data, verify=False)
         return resp
 
     def gen_cipher_ep(self):
